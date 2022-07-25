@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background-color: black;">
+    <h1 style="background-color :chartreuse">login</h1>
+    <form id="login" style="background-color: blue">
+        <input type="text" id="username" placeholder="email"/><br><br>
+        <input type="password" id="password" placeholder="password"/><br><br>
+        <label class="labels">Select your role:</label>
+
+        <select type="dropdown" id="role" value="Select your role!">
+
+        <option id="admin" value="Admin"> Admin </option>
+
+        <option id="user" value="User"> User</option>
+
+        </select>
+        <input type="submit" value="login id"/>
+
+    </form>
+
+    <script>
+        const form=document.getElementById('login')
+        form.addEventListener('submit',LoginUser)
+
+        async function LoginUser(event){
+            event.preventDefault()
+            const email=document.getElementById('username').value
+            const password=document.getElementById('password').value
+            const role=document.getElementById('role').value
+            
+
+
+
+            const result=await fetch('/api/Login',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    email,
+                    password,
+                    role
+                })
+            }).then((res)=>res.json())
+            if(result.status==='OK'){
+                localStorage.setItem('token',result.data)
+
+console.log('Token received',result.data);
+
+alert("succes")
+            }else{
+                alert(result.error)
+            }
+        
+            console.log(result)
+        }
+
+
+    </script>
+</body>
+</html>
